@@ -53,24 +53,9 @@ public class SinglyLinkedList<E> {
         return size;
     }
 
-    /** Compute size by traversal */
-    public int size2() {
-        int count = 0;
-        Node<E> current = head;
-        while (current != null) {
-            count++;
-            current = current.getNext();
-        }
-        return count;
-    }
-
     /** Returns true if the list is empty, false otherwise. */
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    public boolean isEmpty2() {
-        return (head==null && tail==null);
     }
 
     /**
@@ -108,7 +93,7 @@ public class SinglyLinkedList<E> {
     }
 
     /** Removes the first occurrence of o (by equals); returns true if removed. */
-    public boolean remove(Object o) {
+    public boolean remove(E e) {
         // you fill in here 
         return false;
     }

@@ -31,7 +31,6 @@ class SinglyLinkedListTest {
 
     private static void assertSizeBoth(SinglyLinkedList<?> list, int expected) {
         assertEquals(expected, list.size(), "size() mismatch");
-        assertEquals(expected, list.size2(), "size2() mismatch");
     }
 
     // ============ remove(Object o) ============
