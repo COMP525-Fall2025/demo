@@ -1,6 +1,7 @@
 package demo;
 
 import java.util.Objects;
+
 /**
  * A basic doubly linked list implementation with header/trailer sentinels.
  */
