@@ -11,7 +11,8 @@ class SinglyLinkedListV2Test {
     // ---------- helpers ----------
     private static SinglyLinkedListV2<String> listOf(String... vals) {
         SinglyLinkedListV2<String> list = new SinglyLinkedListV2<>();
-        for (String v : vals) list.addLast(v);
+        for (String v : vals)
+            list.addLast(v);
         return list;
     }
 
@@ -26,7 +27,8 @@ class SinglyLinkedListV2Test {
             tmp.add(val);
         }
         // restore
-        for (T v : tmp) list.addLast(v);
+        for (T v : tmp)
+            list.addLast(v);
         return out;
     }
 
@@ -71,7 +73,7 @@ class SinglyLinkedListV2Test {
     }
 
     @Test
-    void addLast_multiple() {
+    void addLast_removeFirst_multiple() {
         SinglyLinkedListV2<String> list = new SinglyLinkedListV2<>();
         list.addLast("A"); // [A]
         list.addLast("B"); // [A, B]
@@ -91,8 +93,8 @@ class SinglyLinkedListV2Test {
         SinglyLinkedListV2<String> list = new SinglyLinkedListV2<>();
         list.addFirst("B"); // [B]
         list.addFirst("A"); // [A, B]
-        list.addLast("C");  // [A, B, C]
-        list.addLast("D");  // [A, B, C, D]
+        list.addLast("C"); // [A, B, C]
+        list.addLast("D"); // [A, B, C, D]
 
         assertEquals(4, list.size());
         assertEquals("A", list.first());
@@ -108,7 +110,7 @@ class SinglyLinkedListV2Test {
     @Test
     void removeFirst_singleElement() {
         SinglyLinkedListV2<String> list = new SinglyLinkedListV2<>();
-        list.addLast("X");                // [X]
+        list.addLast("X"); // [X]
         assertEquals("X", list.removeFirst()); // []
         assertTrue(list.isEmpty());
         assertEquals(0, list.size());
@@ -116,7 +118,7 @@ class SinglyLinkedListV2Test {
         assertNull(list.last());
 
         // Indirectly confirms tail reset: next addLast should behave like empty case
-        list.addLast("Q");                // [Q]
+        list.addLast("Q"); // [Q]
         assertEquals(1, list.size());
         assertEquals("Q", list.first());
         assertEquals("Q", list.last());
@@ -152,11 +154,11 @@ class SinglyLinkedListV2Test {
         // empty
         assertTrue(list.isEmpty());
         // 1 element
-        list.addFirst("A");              // [A]
+        list.addFirst("A"); // [A]
         assertEquals("A", list.first());
         assertEquals("A", list.last());
         // 2 elements
-        list.addLast("B");               // [A,B]
+        list.addLast("B"); // [A,B]
         assertEquals("A", list.first());
         assertEquals("B", list.last());
         // back to 1 element
@@ -342,12 +344,12 @@ class SinglyLinkedListV2Test {
     @Test
     void removeIndex_interleavedWithAdds_tailIntegrity() {
         SinglyLinkedListV2<String> list = listOf("A", "B", "C");
-        assertEquals("B", list.remove(1));        // [A, C]
-        list.addLast("D");                        // [A, C, D]
+        assertEquals("B", list.remove(1)); // [A, C]
+        list.addLast("D"); // [A, C, D]
         assertEquals("D", list.last());
-        assertEquals("C", list.remove(1));        // [A, D]
+        assertEquals("C", list.remove(1)); // [A, D]
         assertEquals("D", list.last());
-        list.addLast("E");                        // [A, D, E]
+        list.addLast("E"); // [A, D, E]
         assertEquals("E", list.last());
         assertEquals(List.of("A", "D", "E"), snapshot(list));
         assertSizeBoth(list, 3);
@@ -357,7 +359,8 @@ class SinglyLinkedListV2Test {
     void removeIndex_manySequentialOperations() {
         SinglyLinkedListV2<Integer> list = new SinglyLinkedListV2<>();
         // build 0..9
-        for (int i = 0; i < 10; i++) list.addLast(i);
+        for (int i = 0; i < 10; i++)
+            list.addLast(i);
         assertSizeBoth(list, 10);
         int idx = 0; // next even is always at this moving index
         for (int i = 0; i < 5; i++) {
@@ -381,11 +384,11 @@ class SinglyLinkedListV2Test {
     @Test
     void removeObject_thenIndex_thenObject_untilEmpty() {
         SinglyLinkedListV2<String> list = listOf("A", "B", "C", "D", "E");
-        assertTrue(list.remove("A"));        // [B, C, D, E]
-        assertEquals("D", list.remove(2));   // [B, C, E]
-        assertTrue(list.remove("E"));        // [B, C]
-        assertEquals("B", list.remove(0));   // [C]
-        assertTrue(list.remove("C"));        // []
+        assertTrue(list.remove("A")); // [B, C, D, E]
+        assertEquals("D", list.remove(2)); // [B, C, E]
+        assertTrue(list.remove("E")); // [B, C]
+        assertEquals("B", list.remove(0)); // [C]
+        assertTrue(list.remove("C")); // []
         assertTrue(list.isEmpty());
         assertSizeBoth(list, 0);
         // add again to ensure links reset correctly
@@ -401,8 +404,27 @@ class SinglyLinkedListV2Test {
     void removeObject_valueNotPresent_doesNotAffectIndices() {
         SinglyLinkedListV2<String> list = listOf("P", "Q", "R");
         assertFalse(list.remove("Z"));
-        assertEquals("Q", list.remove(1));  // still removes original index 1
+        assertEquals("Q", list.remove(1)); // still removes original index 1
         assertEquals(List.of("P", "R"), snapshot(list));
         assertSizeBoth(list, 2);
+    }
+
+    // ---------- findKthNode tests ----------
+    @Test
+    void findKth_k2_returnsSecondToLast() {
+        var list = listOf("A", "B", "C", "D");
+        assertEquals("C", list.findKthNode(2));
+    }
+
+    @Test
+    void findKth_middleCase_k3_onABCDE_returnsC() {
+        var list = listOf("A", "B", "C", "D", "E");
+        assertEquals("C", list.findKthNode(3));
+    }
+
+    @Test
+    void findKth_kEqualsSize_returnsFirst() {
+        var list = listOf("A", "B", "C", "D");
+        assertEquals("A", list.findKthNode(4));
     }
 }

@@ -94,6 +94,17 @@ public class SinglyLinkedListV2<E> {
         return null;
     }
 
+    /**
+     * return the kth node from the end.
+     * For example, given the linked list that represents 1 -> 2 -> 3 -> 4 -> 5 and
+     * k = 2,return the node with value 4, as it is the 2nd node from the end.
+     * Assume the k is between 1 and size of the list. 
+     **/
+
+    E findKthNode(int k) {
+        // you fill in here
+    }
+
     private void checkIndex(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
